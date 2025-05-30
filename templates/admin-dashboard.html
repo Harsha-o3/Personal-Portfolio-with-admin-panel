@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Personal Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-inline-size: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e90ff, #0066cc);
+            color: white;
+            padding: 2rem 0;
+            margin-block-end: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-block-end: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-block-end: 3rem;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-inline-start: 5px solid #1e90ff;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .summary-card .number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1e90ff;
+            margin-block-end: 0.5rem;
+        }
+
+        .summary-card .label {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .summary-card .description {
+            font-size: 0.9rem;
+            color: #888;
+            margin-block-start: 0.5rem;
+        }
+
+        .nav-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-section h2 {
+            color: #333;
+            margin-block-end: 1.5rem;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .nav-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e90ff, #0066cc);
+            color: white;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .nav-button:hover {
+            background: linear-gradient(135deg, #0066cc, #004499);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4);
+        }
+
+        .nav-button:active {
+            transform: translateY(0);
+        }
+
+        .logout-section {
+            text-align: center;
+            margin-block-start: 3rem;
+        }
+
+        .logout-button {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background: linear-gradient(135deg, #c82333, #a71e2a);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .recent-activity {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-block-start: 2rem;
+        }
+
+        .recent-activity h3 {
+            color: #333;
+            margin-block-end: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .activity-item {
+            padding: 1rem;
+            border-inline-start: 3px solid #1e90ff;
+            background: #f8f9fa;
+            margin-block-end: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .activity-item:last-child {
+            margin-block-end: 0;
+        }
+
+        .activity-time {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-inline-size: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .nav-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <p>Welcome back! Here's an overview of your portfolio</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="summary-card">
+                <div class="number" id="projects-count">12</div>
+                <div class="label">Projects</div>
+                <div class="description">Active portfolio projects</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="number" id="blog-posts-count">8</div>
+                <div class="label">Blog Posts</div>
+                <div class="description">Published articles</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="number" id="messages-count">24</div>
+                <div class="label">Messages</div>
+                <div class="description">Contact form submissions</div>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <h2>Admin Panel Navigation</h2>
+            <div class="nav-buttons">
+                <button class="nav-button" onclick="navigateToProjects()"
+                    style="background: linear-gradient(135deg, #28a745, #218838);">
+                    📁 Manage Projects
+                </button>
+                <button class="nav-button" onclick="navigateToBlogs()"
+                    style="background: linear-gradient(135deg, #28a745, #218838);">
+                    📝 Manage Blogs
+                </button>
+                <button class="nav-button" onclick="navigateToMessages()"
+                    style="background: linear-gradient(135deg, #28a745, #218838);">
+                    📧 View Messages
+                </button>
+                <button class="nav-button" onclick="viewPortfolio()"
+                    style="background: linear-gradient(135deg, #28a745, #218838);">
+                    🌐 View Portfolio
+                </button>
+            </div>
+        </div>
+
+        <div class="recent-activity">
+            <h3>Recent Activity</h3>
+            <div class="activity-item">
+                <strong>New contact message received</strong>
+                <div class="activity-time">2 hours ago</div>
+            </div>
+            <div class="activity-item">
+                <strong>Blog post "Web Development Trends 2025" published</strong>
+                <div class="activity-time">1 day ago</div>
+            </div>
+            <div class="activity-item">
+                <strong>Project "E-commerce Platform" updated</strong>
+                <div class="activity-time">3 days ago</div>
+            </div>
+        </div>
+
+        <div class="logout-section">
+            <button class="logout-button" onclick="logout()">
+                🚪 Logout
+            </button>
+        </div>
+    </div>
+
+    <script>
+    function navigateToProjects() {
+        if (confirm('Navigating to Projects Management...')) {
+            alert('You are being redirected to the Projects Management page.');
+            window.location.href = '/admin-projects';  // Flask route
+        }
+    }
+
+    function navigateToBlogs() {
+        if (confirm('Navigating to Blog Management...')) {
+            alert('You are being redirected to the Blog Management page.');
+            window.location.href = '/admin-blogs';  // Flask route
+        }
+    }
+
+    function navigateToMessages() {
+        if (confirm('Navigating to Messages...')) {
+            alert('You are being redirected to the Messages page.');
+            window.location.href = '/admin-messages';  // Flask route
+        }
+    }
+
+    function viewPortfolio() {
+        if (confirm('Opening Portfolio...')) {
+            alert('You are being redirected to the Portfolio page...');
+            window.location.href = '/';  // Main index route
+        }
+    }
+
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            alert('Logging out...');
+            window.location.href = '/admin-login';  // Redirect to login page
+        }
+    }
+        // Simulate real-time updates
+        function updateCounts() {
+            const projectsCount = document.getElementById('projects-count');
+            const blogCount = document.getElementById('blog-posts-count');
+            const messagesCount = document.getElementById('messages-count');
+
+            // Simulate dynamic counting animation
+            animateCount(projectsCount, 0, 12, 1000);
+            animateCount(blogCount, 0, 8, 800);
+            animateCount(messagesCount, 0, 24, 1200);
+        }
+
+        function animateCount(element, start, end, duration) {
+            let startTime = null;
+            
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const progress = Math.min(timeElapsed / duration, 1);
+                
+                const current = Math.floor(progress * (end - start) + start);
+                element.textContent = current;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animation);
+                }
+            }
+            
+            requestAnimationFrame(animation);
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCounts();
+            
+            // Add welcome message
+            setTimeout(() => {
+                console.log('Dashboard loaded successfully!');
+            }, 500);
+        });
+
+        // Add some interactivity to summary cards
+        document.querySelectorAll('.summary-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const label = this.querySelector('.label').textContent;
+                alert(`Viewing ${label} details...`);
+            });
+        });
+    </script>
+</body>
+</html>
